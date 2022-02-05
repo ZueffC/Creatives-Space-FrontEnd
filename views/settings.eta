@@ -1,0 +1,77 @@
+<%~ layout('./layout') %>
+
+<script src="../static/js/jquery-3.6.0.min.js"></script>
+
+<div class="container mt-12">
+    <div class="card" style="display: grid;">
+        <div class="skill-box">
+            <div class="header bg-white fg-black">
+                <a class="no-decor fg-black" href="/profile">
+                    <img src="<%= it.baseUrl %><%= it.data.About.Avatar %>" class="avatar">
+                    <div class="title">
+                        <%= it.data.User.Nick %>
+                    </div>
+                    <div class="subtitle">Cool *somebody*</div>
+                </a>
+            </div>
+        </div>
+    </div>
+    
+    <div class="card">
+        <div class="card-header">
+            <center>Основные настройки Вашего профиля:</center>
+        </div>
+        <div class="card-content p-2">
+            <form method="post">
+                <input type="text" data-role="input" name="nick" data-prepend="Имя:&#160; &#160;" value="<%= it.data.User.Nick %>">
+                <input type="email" data-role="input" name="email" data-prepend="E-Mail:" value="<%= it.data.User.Email %>">
+                <textarea data-role="textarea" name="about" data-prepend="&#128221; &#160;	&#160;	&#160;	" data-default-value="<%= it.data.About.About %>"></textarea>
+
+                <center>
+                    <button class="button secondary mt-1" type="submit">Отправить</button>
+                </center>
+            </form>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-header">
+            <center>Смена пароля Вашего профиля:</center>
+        </div>
+        <div class="card-content p-2">
+            <form method="post" action="/change-password">
+                <input type="password" data-role="input" name="oldPass" data-prepend="Старый: ">
+                <input type="password" data-role="input" name="newPass" data-prepend="Новый:&#160;	">
+
+                <center>
+                    <button class="button secondary mt-1" type="submit">Отправить</button>
+                </center>
+            </form>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-header">
+            <center>Смена изображения Вашего профиля:</center>
+        </div>
+
+        <div class="card-content p-2">
+            <form method="post" id="uploadForm">
+                <p>Аватарка:</p> <br />
+                <input type="file" data-role="file" name="avatar" accept=".jpg, .jpeg, .gif, .png">
+
+                <p>Обложка:</p> <br />
+                <input type="file" data-role="file"  name="cover" accept=".jpg, .jpeg, .gif, .png">
+
+                <center>
+                    <button class="button secondary mt-1" type="submit">Отправить</button>
+                </center>
+            </form>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    let _0x639c=["\x73\x75\x62\x6D\x69\x74","\x70\x72\x65\x76\x65\x6E\x74\x44\x65\x66\x61\x75\x6C\x74","\x67\x65\x74","\x50\x4F\x53\x54","\x53\x74\x61\x74\x75\x73","\x68\x72\x65\x66","\x6C\x6F\x63\x61\x74\x69\x6F\x6E","\x2F\x70\x72\x6F\x66\x69\x6C\x65","\u041E\u0448\u0438\u0431\u043A\u0430\x20\u043F\u0440\u0438\x20\u0437\u0430\u0433\u0440\u0443\u0437\u043A\u0435\x20\u0444\u043E\u0442\u043E\x2E","\x61\x6A\x61\x78","\x6F\x6E","\x23\x75\x70\x6C\x6F\x61\x64\x46\x6F\x72\x6D"];$(function(){$(_0x639c[11])[_0x639c[10]](_0x639c[0],function(_0x7e1cx1){_0x7e1cx1[_0x639c[1]]();let _0x7e1cx2=$(this),_0x7e1cx3= new FormData(_0x7e1cx2[_0x639c[2]](0));$[_0x639c[9]]({method:_0x639c[3],url:"<%= it.baseUrl %>upload-profile-photo/by/<%= E.userId %>",contentType:false,processData:false,data:_0x7e1cx3,success:function(_0x7e1cx4){if(_0x7e1cx4){if(_0x7e1cx4[_0x639c[4]]== 200){window[_0x639c[6]][_0x639c[5]]= _0x639c[7]}else {alert(_0x639c[8])}}}})})})
+</script>

@@ -1,0 +1,58 @@
+<nav class="navbar navbar-expand-lg">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="/">
+            <i class="fas fa-film mr-2"></i>
+            <%= E.siteName %>
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="fas fa-bars"></i>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav ml-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link nav-link-1 active" aria-current="page" href="/">Главная</a>
+                </li>
+                <% if (!E.userId) { %>
+                    <li class="nav-item">
+                        <a class="nav-link nav-link-2" href="/login">Войти</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link nav-link-3" href="/register">Регистрация</a>
+                    </li>
+                <% } else { %>
+                    <li class="nav-item">
+                        <a class="nav-link nav-link-2" href="/profile">Аккаунт</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link nav-link-3" href="/logout">Выйти</a>
+                    </li>
+                <% } %>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<script defer>
+    let url = document.location.pathname;
+    let collapseNav = document.querySelector(".navbar-collapse");
+
+    function blackNav(){
+        setInterval(() => {
+            if(window.innerWidth < 991){
+                collapseNav.style.backgroundColor = "#111";
+            } else {
+                collapseNav.style.backgroundColor = "";
+            }
+        }, 100);
+    }
+
+    if (url === "/login" || url === "/profile" || url === "/change-information") {
+        let item1 = (document.querySelector(".nav-link-1")).classList.remove("active");
+        let item2 = (document.querySelector(".nav-link-2")).classList.add("active");
+    } else if (url === "/register"){
+        let item1 = (document.querySelector(".nav-link-1")).classList.remove("active");
+        let item3 = (document.querySelector(".nav-link-3")).classList.add("active");
+    } else if(url === "/login" || url === "/register"){
+        blackNav();
+    }
+</script>

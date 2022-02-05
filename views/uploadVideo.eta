@@ -1,0 +1,61 @@
+<% layout('./layout') %>
+
+<script src="../static/js/jquery-3.6.0.min.js"></script>
+<script src="../static/js/sweetalert2.all.min.js"></script>
+
+<br /><br /><br /><br /><br /><br />
+<div class="container mt-5-xl justify-content-center">
+    <form method="post" id="uploadForm" enctype="multipart/form-data">
+        <fieldset>
+            <div class="mb-3">
+                <label for="exampleFormControlInput1" class="form-label">Название видео: </label>
+                <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="" name="name">
+            </div>
+
+            <div class="mb-3">
+                <label for="exampleFormControlTextarea1" class="form-label">Описание видео: </label>
+                <textarea class="form-control" id="exampleFormControlTextarea1" name="about" rows="3"></textarea>
+            </div>
+
+            <div class="mb-3">
+                <label for="video" class="form-label">Выберите файл видео:</label>
+                <input class="form-control" type="file" id="video" name="video" accept=".mp4, .3gp, .mkv, .avi, .webm">
+            </div>
+
+            <div class="mb-3">
+                <label for="cover" class="form-label">Выберите обложку видео:</label>
+                <input class="form-control" type="file" id="cover" name="cover" accept=".jpg, .jpeg, .gif, .png">
+            </div>
+
+            <input type="submit" class="btn btn-primary" value="Отправить!">
+        </fieldset>
+    </form>
+</div>
+
+
+<script>
+    $(function(){
+        $('#uploadForm').on('submit', function(e){
+            e.preventDefault();
+            let $that = $(this),
+                formData = new FormData($that.get(0)); // создаем новый экземпляр объекта и передаем ему форму
+            $.ajax({
+                method: 'POST',
+                url: "<%= it.baseUrl %>upload-video/by/<%= E.userId %>",
+                contentType: false, // убираем форматирование данных
+                processData: false, // убираем преобразование строк
+                data: formData,
+                success: function(json){
+                    if(json){
+                        if(json.Status == 200){
+                            window.location.href = "/profile";
+                        } else {
+                            alert("Ошибка при загрузке видео.");
+                        }
+                    }
+                }
+            });
+
+            setTimeout(() => Swal.fire('Видео загружается, пожалуйста, подождите!'), 10000);
+        });
+    });</script>

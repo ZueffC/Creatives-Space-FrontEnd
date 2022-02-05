@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Скоро сайт будет доступен.</title>
+    <style>
+        @font-face {
+            font-family: "MicaCB";
+            src: url("../static/fonts/Micracb.ttf") format("truetype");
+            font-style: normal;
+            font-weight: normal;
+            font-display: swap;
+        }
+
+        body, html, h1 {
+            background-color: #000;
+            font-family: "MicaCB";
+            margin: 0;
+            padding: 0;
+        }
+
+        @media screen and (min-width: 570px){
+            .title {
+                text-align: center;
+                font-size: 400%;
+                line-height: 104px;
+                font-weight: 600;
+                color: #fff;
+                margin: 74px 0 54px 0;
+                width: 100%;
+                white-space: normal;
+            }
+        }
+        @media screen and (max-width: 570px){
+            .title {
+                text-align: center;
+                font-size: 300%;
+                line-height: 104px;
+                font-weight: 600;
+                color: #fff;
+                margin: 74px 0 54px 0;
+                width: 100%;
+                white-space: normal;
+            }
+        }
+
+        @media screen and (max-width: 425px){
+            .title {
+                text-align: center;
+                font-size: 200%;
+                line-height: 104px;
+                font-weight: 600;
+                color: #fff;
+                margin: 74px 0 54px 0;
+                width: 100%;
+                white-space: normal;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="text" style="margin-top: 20% !important;">
+        <h1 class="title">
+            <p>Скоро сайт будет доступен.</p>
+            <p><!-- А может и не скоро. 10 лет - красивая цифра :) Эх, ягода-малина, Ягода-Малюта... --></p>
+        </h1>
+    </div>
+</body>
+</html>

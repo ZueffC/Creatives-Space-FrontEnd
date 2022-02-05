@@ -1,0 +1,111 @@
+<% layout('./layout') %>
+
+<script src="https://cdn.plyr.io/3.6.12/plyr.js"></script>
+<link rel="stylesheet" href="https://cdn.plyr.io/3.6.12/plyr.css" />
+
+<style>
+    .plyr__video-wrapper {
+        max-height: 800px;
+    }
+</style>
+
+<div class="tm-hero d-flex justify-content-center align-items-center" data-parallax="scroll" data-image-src="../static/images/hero.jpg">
+    <form class="d-flex tm-search-form">
+        <input class="form-control tm-search-input" type="search" placeholder="Search" aria-label="Search">
+        <button class="btn btn-outline-success tm-search-btn" type="submit">
+            <i class="fas fa-search"></i>
+        </button>
+    </form>
+</div>
+
+<div class="container-fluid tm-container-content tm-mt-60">
+    <div class="row mb-4">
+        <h2 class="col-12 tm-text-primary"><%= it.video.Video.Name %></h2>
+    </div>
+    <div class="row tm-mb-90">
+        <div class="col-xl-8 col-lg-7 col-md-6 col-sm-12">
+            <video id="player" playsinline controls poster="<%= it.baseUrl %><%= it.video.Video.Cover %>">
+                <source src="<%= it.baseUrl %><%= it.video.Video.PathToVideo %>">
+            </video>
+        </div>
+        <div class="col-xl-4 col-lg-5 col-md-6 col-sm-12">
+            <div class="tm-bg-gray tm-video-details">
+                <span class="tm-text-gray-dark mb-6">Описание: <%= it.video.Video.About %></span>
+                <div class="text-center mb-5 mt-5">
+                    <a
+                        href="<%= it.baseUrl %><%= it.video.Video.PathToVideo %>"
+                        class="btn btn-primary tm-btn-big"
+                        download
+                    >
+                        Скачать
+                    </a>
+                </div>
+                <div class="mb-4 d-flex flex-wrap">
+                    <div class="mr-4 mb-2">
+                        <span class="tm-text-gray-dark">Автор видео: </span>
+                        <span class="tm-text-primary" id="resolution">
+                            <span class="badge bg-secondary">
+                                <a href="../user/<%= it.video.VideoAuthor.ID %>" class="text-decoration-none text-white">
+                                    <%= it.video.VideoAuthor.Nick %>
+                                </a>
+                            </span>
+                        </span>
+                    </div>
+                </div>
+                <div class="mb-4">
+                    <h3 class="tm-text-gray-dark mb-3">Лицензирование</h3>
+                    <p>
+                        Бесплатно как для личного, так и для коммерческого использования. Не нужно ничего платить. Нет необходимости делать какую-либо атрибуцию.
+                    </p>
+                </div>
+                <div>
+                    <h3 class="tm-text-gray-dark mb-3">Тэги</h3>
+                    <a href="#" class="tm-text-primary mr-4 mb-2 d-inline-block">[Object object]</a>
+                    <a href="#" class="tm-text-primary mr-4 mb-2 d-inline-block">[Object object]</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row mb-4">
+        <h2 class="col-12 tm-text-primary">
+            Другие классные видосики:
+        </h2>
+    </div>
+    <div class="row mb-3 tm-gallery" id="videoList">
+
+    </div>
+</div> <!-- container-fluid, tm-container-content -->
+
+
+<script>
+    window.onload = () => {
+        const player = new Plyr('#player');
+        const videoList = document.querySelector("#videoList");
+
+        fetch("<%= it.baseUrl %>add-view-to-video/<%= it.video.Video.ID %>");
+
+        fetch("<%= it.baseUrl %>")
+            .then(videos => videos.json())
+            .then(videos => {
+                videos.forEach(video => {
+                    videoList.innerHTML += `
+                        <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6 col-12 mb-5">
+                            <figure class="effect-ming tm-video-item">
+                                <img src="<%= it.baseUrl %>${video.Cover}" alt="Image" class="img-fluid">
+                                <figcaption class="d-flex align-items-center justify-content-center">
+                                    <h2>
+                                        ${(timeago.format(video.CreatedAt, "ru")).toUpperCase()}
+                                    </h2>
+                                <a href="../video/${video.ID}">Смотерть...</a>
+                                </figcaption>
+                            </figure>
+                            <div class="d-flex justify-content-between tm-text-gray">
+                                <span class="tm-text-gray-light">${video.Name}</span>
+                                <span>${video.Views} просмотров</span>
+                            </div>
+                        </div>
+                    `;
+                });
+            });
+    };
+</script>
