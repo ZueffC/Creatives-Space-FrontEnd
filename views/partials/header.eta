@@ -40,6 +40,7 @@
         setInterval(() => {
             if(window.innerWidth < 991){
                 collapseNav.style.backgroundColor = "#111";
+                collapseNav.style.zIndex = 10000;
             } else {
                 collapseNav.style.backgroundColor = "";
             }
@@ -52,7 +53,7 @@
     } else if (url === "/register"){
         let item1 = (document.querySelector(".nav-link-1")).classList.remove("active");
         let item3 = (document.querySelector(".nav-link-3")).classList.add("active");
-    } else if(url === "/login" || url === "/register"){
-        blackNav();
     }
+
+    blackNav();
 </script>

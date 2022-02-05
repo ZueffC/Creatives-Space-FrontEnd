@@ -37,7 +37,6 @@
             <%~ it.body %>
         </main>
 
-        <%~ includeFile("./partials/footer") %>
 
         <script src="../static/js/plugins.js"></script>
         <script async>

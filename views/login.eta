@@ -6,7 +6,7 @@
 <link rel="stylesheet" href="static/css/auth.css">
 
 <body class="img js-fullheight" style="background-image: url(static/images/bg.jpg);">
-    <section class="ftco-section">
+    <section class="ftco-section mb-3">
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-6 text-center mb-5">
@@ -55,6 +55,8 @@
         </div>
     </div>
 </section>
+
+<br /><br />
 
 <script src="static/js/jquery.min.js"></script>
 <script src="static/js/popper.js"></script>

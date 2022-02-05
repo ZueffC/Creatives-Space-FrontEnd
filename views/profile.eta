@@ -86,8 +86,19 @@
     let CoverDiv = document.querySelector(".user-cover");
     let AvatarImg = document.querySelector(".user-avatar-img");
 
-    let avatarUrl = "<%= it.baseUrl%><%= it.data.About.Avatar %>" || "../static/images/avatar.jpg";
-    let coverUrl = "url(<%= it.baseUrl%><%= it.data.About.Cover %>)" || "url(../static/images/cover.jpg)";
+    let avatarUrl, coverUrl;
+
+    if ("<%= it.data.About.Avatar %>".length > 0){
+        avatarUrl = "<%= it.baseUrl %><%= it.data.About.Avatar %>";
+    } else {
+        avatarUrl = "../static/images/avatar.png";
+    }
+
+    if ("<%= it.data.About.Cover %>".length > 0){
+        coverUrl = "<%= it.baseUrl %><%= it.data.About.Cover %>";
+    } else {
+        coverUrl =  "url(../static/images/cover.jpg)";
+    }
 
     let coverPath = coverUrl;
     let avatarPath = avatarUrl;
