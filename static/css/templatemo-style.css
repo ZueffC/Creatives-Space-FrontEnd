@@ -8,6 +8,7 @@ https://templatemo.com/tm-556-catalog-z
 * {
     margin: 0;/*это свойство можно удалить, если вы используете reset, normalize или нечто подобное*/
     padding: 0;
+    word-break: break-all;
 }
 
 body, html {
