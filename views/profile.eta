@@ -26,8 +26,13 @@
                 </div>
             </aside>
             <nav class="list-group">
-                <a class="list-group-item" href="profile"><i class="fa fa-user"></i>Профиль</a>
-                <a class="list-group-item with-badge" href="change-information"><i class=" fa fa-th"></i>Настройки</a>
+                <a class="list-group-item" href="../profile"><i class="fa fa-user"></i>Профиль</a>
+
+                <% if (E.userId == it.data.User.ID) { %>
+                    <a class="list-group-item with-badge" href="change-information">
+                        <i class=" fa fa-th"></i>Настройки
+                    </a>
+                <% } %>
             </nav>
         </div>
         <div class="col-lg-8">
@@ -37,8 +42,13 @@
                 <table class="table">
                     <thead>
                         <tr>
-                            <th>Ваши видео: </th>
-                            <th class="text-center"><a class="btn btn-sm btn-outline-danger" href="/upload-video">Добавить новый</a></th>
+                            <th>Загруженные видео: </th>
+
+                            <% if (E.userId == it.data.User.ID) { %>
+                                <th class="text-center">
+                                    <a class="btn btn-sm btn-outline-danger" href="/upload-video">Добавить новый</a>
+                                </th>
+                            <% } %>
                         </tr>
                     </thead>
 
