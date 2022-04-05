@@ -52,7 +52,7 @@ app.use(function(req,res,next){
     res.locals.avatar = req.session.Avatar || null;
     res.baseUrl = baseUrl;
 
-    res.locals.siteName = "V-Space";
+    res.locals.siteName = "Creatives-Space";
     next();
 });
 
