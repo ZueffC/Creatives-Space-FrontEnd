@@ -17,8 +17,8 @@ const Eta = require("eta");
 const app = express();
 
 //let baseUrl = "http://127.0.0.1:5000/api/v1/"; //On localhost
-let baseUrl = "https://vi-space-api.herokuapp.com/api/v1/"; //On production
-let authUrl = "http://f0615495.xsph.ru/api/v1/";
+let baseUrl = "https://creatives-space-api.herokuapp.com/api/v1/"; //On production
+let authUrl = "https://creatives-space-auth.herokuapp.com/api/v1/";
 
 Eta.configure({
     filter: function (val) {
@@ -52,7 +52,7 @@ app.use(function(req,res,next){
     res.locals.avatar = req.session.Avatar || null;
     res.baseUrl = baseUrl;
 
-    res.locals.siteName = "V-Space";
+    res.locals.siteName = "Creatives-Space";
     next();
 });
 
@@ -60,12 +60,12 @@ app.get('/', (req, res) => { Pages.mainPage(req, res, baseUrl) });
 app.get('/wait', (req, res) => { res.render("wait") });
 app.get('/sitemap.xml', (req, res) => { sitemap.XMLtoWeb(res);})
 app.get('/profile', (req, res) => { Pages.profilePage(req, res, baseUrl) });
-app.get('/user/:id', (req, res) => { Pages.seeUser(req, res, baseUrl) });
+
+app.get('/register', (req, res) => { Auth.registerGet(req, res, authUrl) });
+app.post('/register', (req, res) => { Auth.registerPost(req, res, authUrl) });
 
 app.get('/login', (req, res) => { Auth.loginGet(req, res, authUrl) });
-app.get('/register', (req, res) => { Auth.registerGet(req, res, authUrl) });
 app.post('/login', (req, res) => { Auth.loginPost(req, res, authUrl, baseUrl) });
-app.post('/register', (req, res) => { Auth.registerPost(req, res, authUrl) });
 app.get('/logout', (req, res) => { req.session.userId = null; res.redirect('/'); });
 
 app.get('/upload-video', (req, res) => { Uploads.getVideUploadPage(req, res, baseUrl); });
@@ -75,6 +75,8 @@ app.post('/change-information', (req, res) => { Settings.changeMainInformation(r
 app.post('/change-password', (req, res) => { Settings.changeUserPassword(req, res, baseUrl) });
 
 app.get('/video/:videoId', (req, res) => { Pages.videoPage(req, res, baseUrl) });
+app.get('/user/:id', (req, res) => { Pages.seeUser(req, res, baseUrl) });
+
 app.post('/add-emotion', (req, res) => { Pages.sendEmotion(req, res, baseUrl) });
 app.post('/add-comment', (req, res) => { Pages.sendComment(req, res, baseUrl) });
 

@@ -47,7 +47,7 @@ function registerPost(req, res, authUrl) {
 
         axios.post(authUrl + `registration`, {nick: nick, email: email, password: password})
             .then(response => {
-                if (response.data.Status == 200){
+                if (response.data.Comment == "user was created successfully"){
                     res.redirect('/login');
                 } else {
                     res.redirect('/register');

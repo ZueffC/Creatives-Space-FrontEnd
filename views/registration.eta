@@ -19,7 +19,7 @@
                 <div class="login-wrap p-0">
                     <h3 class="mb-4 text-center">Ещё нет аккаунта?</h3>
 
-                    <form action="/login" class="signin-form" method="post">
+                    <form action="/register" class="signin-form" method="post">
                         <div class="form-group">
                             <input type="text" name="nick" class="form-control" placeholder="Ваш ник" required>
                         </div>

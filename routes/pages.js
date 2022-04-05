@@ -14,6 +14,7 @@ function profilePage(req, res, baseUrl){
             .then(responseUser => {
                 axios.get(baseUrl + `getAllUserVideos/${userId}`)
                     .then(responseVideos => {
+                        console.log(responseUser.data)
                         res.render("profile",
                             {
                                 data: responseUser.data,
