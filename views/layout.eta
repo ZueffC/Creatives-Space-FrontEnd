@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" class="bg-grayBlue">
+<html lang="ru" class="bg-grayBlue">
     <head>
         <meta charset="UTF-8">
         <meta name="viewport"
@@ -21,6 +21,12 @@
         <link rel="icon" href="../static/images/favicon.ico">
 
         <script src="../static/js/timeago.full.min.js"></script>
+
+        <style>
+            * {
+                hyphens: auto;
+            }
+        </style>
     </head>
 
     <body class="">

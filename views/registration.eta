@@ -9,7 +9,7 @@
 <body class="img js-fullheight" style="background-image: url(static/images/bg.jpg);">
 <section class="ftco-section">
     <div class="container">
-        <div class="row justify-content-center">
+        <div class="row justify-content-center auth-title">
             <div class="col-md-6 text-center mb-5">
                 <h2 class="heading-section">Регистрация</h2>
             </div>
@@ -36,7 +36,7 @@
                         </div>
 
                         <div class="form-group">
-                            <button type="submit" class="form-control btn btn-primary submit px-3">Зарегаться</button>
+                            <button type="submit" class="form-control btn btn-primary submit px-3">Регистрация</button>
                         </div>
 
                         <div class="form-group d-md-flex">

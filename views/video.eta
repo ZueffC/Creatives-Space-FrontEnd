@@ -11,7 +11,7 @@
 
 <div class="tm-hero d-flex justify-content-center align-items-center" data-parallax="scroll" data-image-src="../static/images/hero.jpg">
     <form class="d-flex tm-search-form">
-        <input class="form-control tm-search-input" type="search" placeholder="Search" aria-label="Search">
+        <input class="form-control tm-search-input" type="search" placeholder="Искать..." aria-label="Search">
         <button class="btn btn-outline-success tm-search-btn" type="submit">
             <i class="fas fa-search"></i>
         </button>
@@ -68,13 +68,13 @@
     </div>
     <div class="row mb-4">
         <h2 class="col-12 tm-text-primary">
-            Другие классные видосики:
+            Другие классные видео:
         </h2>
     </div>
     <div class="row mb-3 tm-gallery" id="videoList">
 
     </div>
-</div> <!-- container-fluid, tm-container-content -->
+</div>
 
 
 <script>

@@ -4,4 +4,9 @@
 
 .ftco-section {
     margin-top: -20px;
+    padding: 0 !important;
+}
+
+.auth-title {
+    padding-bottom: 2%;
 }

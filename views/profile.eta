@@ -46,7 +46,7 @@
 
                             <% if (E.userId == it.data.User.ID) { %>
                                 <th class="text-center">
-                                    <a class="btn btn-sm btn-outline-danger" href="/upload-video">Добавить новый</a>
+                                    <center><a class="btn btn-sm btn-outline-danger" href="/upload-video"> + </a></center>
                                 </th>
                             <% } %>
                         </tr>
