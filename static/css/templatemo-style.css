@@ -636,7 +636,7 @@ select:not([multiple]) {
 }
 
 @media (max-width: 400px) {
-    .tm-btn-big { padding: 12px 50px 14px; }
+    .tm-btn-big { padding: 12px 47px 14px; }
 }
 
 @media (max-width: 334px) {

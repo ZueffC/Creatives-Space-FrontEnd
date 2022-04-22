@@ -1,15 +1,18 @@
 <% layout('./layout') %>
 
-<script src="https://cdn.plyr.io/3.6.12/plyr.js"></script>
-<link rel="stylesheet" href="https://cdn.plyr.io/3.6.12/plyr.css" />
+<script src="../static/js/plyr.js"></script>
+<script src="../static/js/fetchival.min.js"></script>
+<link rel="stylesheet" href="../static/css/plyr.css" />
 
 <style>
-    .plyr__video-wrapper {
-        max-height: 800px;
+    .plyr.plyr--full-ui.plyr--video {
+        max-height: 700px;
     }
 </style>
 
-<div class="tm-hero d-flex justify-content-center align-items-center" data-parallax="scroll" data-image-src="../static/images/hero.jpg">
+<div class="tm-hero d-flex justify-content-center align-items-center" data-parallax="scroll"
+     data-image-src="../static/images/hero.jpg"
+>
     <form class="d-flex tm-search-form">
         <input class="form-control tm-search-input" type="search" placeholder="Искать..." aria-label="Search">
         <button class="btn btn-outline-success tm-search-btn" type="submit">
@@ -23,26 +26,31 @@
         <h2 class="col-12 tm-text-primary"><%= it.video.Video.Name %></h2>
     </div>
     <div class="row tm-mb-90">
+
         <div class="col-xl-8 col-lg-7 col-md-6 col-sm-12">
             <video id="player" playsinline controls poster="<%= it.baseUrl %><%= it.video.Video.Cover %>">
                 <source src="<%= it.baseUrl %><%= it.video.Video.PathToVideo %>">
             </video>
+            <div class="tm-bg-gray tm-video-details" style="height: 50px; padding-top: 5px !important;">
+                <center>
+                    <button class="btn btn-danger" onclick="emote(1)">Лайк: <%= it.video.CountOfLikes %></button>
+                    <button class="btn btn-danger" onclick="emote(0)">Дизлайк: <%= it.video.CountOfDislikes %></button>
+                </center>
+            </div>
         </div>
         <div class="col-xl-4 col-lg-5 col-md-6 col-sm-12">
             <div class="tm-bg-gray tm-video-details">
-                <span class="tm-text-gray-dark mb-6">Описание: <%= it.video.Video.About %></span>
-                <div class="text-center mb-5 mt-5">
-                    <a
-                        href="<%= it.baseUrl %><%= it.video.Video.PathToVideo %>"
-                        class="btn btn-primary tm-btn-big"
-                        download
-                    >
+                <span class="tm-text-gray-dark mb-6"><b>Описание</b>: <%= it.video.Video.About %></span>
+                <div class="text-center mb-4 mt-4">
+                    <a href="<%= it.baseUrl %><%= it.video.Video.PathToVideo %>"
+                       class="btn btn-primary tm-btn-big w-100" download>
                         Скачать
                     </a>
+                    <a class="btn btn-primary tm-btn-big mt-2 w-100" id="share" onclick="toast()">Поделиться</a>
                 </div>
                 <div class="mb-4 d-flex flex-wrap">
                     <div class="mr-4 mb-2">
-                        <span class="tm-text-gray-dark">Автор видео: </span>
+                        <span class="tm-text-gray-dark"><b>Автор видео:</b> </span>
                         <span class="tm-text-primary" id="resolution">
                             <span class="badge bg-secondary">
                                 <a href="../user/<%= it.video.VideoAuthor.ID %>" class="text-decoration-none text-white">
@@ -65,19 +73,24 @@
                 </div>
             </div>
         </div>
+
     </div>
     <div class="row mb-4">
         <h2 class="col-12 tm-text-primary">
             Другие классные видео:
         </h2>
     </div>
-    <div class="row mb-3 tm-gallery" id="videoList">
-
-    </div>
+    <div class="row mb-3 tm-gallery" id="videoList"></div>
 </div>
 
+<script src="../static/js/clipboard.min.js"></script>
+<script async>
+    let clipboard = new ClipboardJS('#share', {
+        text: function(trigger) {
+            return document.baseURI;
+        }
+    });
 
-<script>
     window.onload = () => {
         const player = new Plyr('#player');
         const videoList = document.querySelector("#videoList");
@@ -108,4 +121,26 @@
                 });
             });
     };
+
+    function toast(){
+        let toastOfShareComponent = document.querySelector("#ToastOfShare")
+        let toast = new bootstrap.Toast(toastOfShareComponent)
+        toast.show()
+    }
+    function emote(em) {
+        fetchival('/add-emotion').post({
+            videoId: "<%= it.video.Video.ID %>",
+            emotion: em,
+        })
+    }
 </script>
+
+
+<!-- Toast of shared url -->
+<div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
+    <div id="ToastOfShare" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="toast-body">
+            Ссылка на видео скопирована!
+        </div>
+    </div>
+</div>

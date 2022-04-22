@@ -3,8 +3,9 @@
 <script src="../static/js/jquery-3.6.0.min.js"></script>
 <script src="../static/js/sweetalert2.all.min.js"></script>
 
-<br /><br /><br /><br /><br /><br />
-<div class="container mt-5-xl justify-content-center">
+<br /><br /><br />
+
+<div class="container mt-5-xl justify-content-center mb-2">
     <form method="post" id="uploadForm" enctype="multipart/form-data">
         <fieldset>
             <div class="mb-3">

@@ -1,12 +1,12 @@
 const axios = require('axios');
 
-function mainPage(req, res, baseUrl){
+async function mainPage(req, res, baseUrl){
     axios.get(baseUrl).then((response) => {
         res.render("index", {videos: response.data, title: "Главная", baseUrl: baseUrl});
     });
 }
 
-function profilePage(req, res, baseUrl){
+async function profilePage(req, res, baseUrl){
     let userId = req.session.userId;
 
     if (userId){
@@ -19,7 +19,7 @@ function profilePage(req, res, baseUrl){
                             {
                                 data: responseUser.data,
                                 videos: responseVideos.data || null,
-                                baseUrl: baseUrl, title: "Профиль " + responseUser.data.User.nick,
+                                baseUrl: baseUrl, title: "Профиль " + responseUser.data.User.Nick,
                                 profile: true
                             }
                         );
@@ -30,7 +30,7 @@ function profilePage(req, res, baseUrl){
     }
 }
 
-function videoPage(req, res, baseUrl){
+async function videoPage(req, res, baseUrl){
     if (req.params.videoId){
         let comments;
 
@@ -45,7 +45,7 @@ function videoPage(req, res, baseUrl){
     }
 }
 
-function sendEmotion(req, res, baseUrl){
+async function sendEmotion(req, res, baseUrl){
     if(req.session.userId){
         let videoId = parseInt(req.body.videoId, 10);
         let emotion = parseInt(req.body.emotion, 10);
@@ -57,7 +57,7 @@ function sendEmotion(req, res, baseUrl){
     }
 }
 
-function sendComment(req, res, baseUrl){
+async function sendComment(req, res, baseUrl){
     if(req.session.userId){
         let comment = req.body.comment;
         let userId  = parseInt(req.session.userId, 10);
@@ -69,7 +69,7 @@ function sendComment(req, res, baseUrl){
     }
 }
 
-function seeUser(req, res, baseUrl){
+async function seeUser(req, res, baseUrl){
     let userId = req.params.id;
     let sessionId = req.session.userId;
 
@@ -88,8 +88,22 @@ function seeUser(req, res, baseUrl){
     }
 }
 
+async function likedVideos(req, res, baseUrl){
+    let userId = req.session.userId;
+
+    if (userId != null && userId > 0){
+        axios.post(baseUrl + "liked-videos", {userId: parseInt(userId, 10)}).then(reponseVideos => {
+            res.render("liked-videos", {videos: reponseVideos.data, baseUrl: baseUrl});
+        });
+    } else {
+        res.redirect("/login");
+    }
+}
+
+
 module.exports = {
     name: "Pages",
+    likedVideos: likedVideos,
     mainPage: mainPage,
     profilePage: profilePage,
     videoPage: videoPage,

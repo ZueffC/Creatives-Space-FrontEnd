@@ -15,7 +15,7 @@ function settingsPage(req, res, baseUrl){
 }
 
 function changeMainInformation(req, res, baseUrl){
-    let id = req.session.userId;
+    let id = parseInt(req.session.userId, 10);
 
     let nick = req.body.nick;
     let email = req.body.email;

@@ -3,6 +3,7 @@
 const port = process.env.PORT || 3333;
 
 const Settings = require('./routes/settings');
+const Wrapper = require('./routes/wrapper');
 const Uploads = require('./routes/uploads');
 const Pages = require('./routes/pages');
 const Auth = require('./routes/auth');
@@ -16,15 +17,15 @@ const cors = require('cors');
 const Eta = require("eta");
 const app = express();
 
-//let baseUrl = "http://127.0.0.1:5000/api/v1/"; //On localhost
-let baseUrl = "https://creatives-space-api.herokuapp.com/api/v1/"; //On production
+let baseUrl = "http://127.0.0.1:5000/api/v1/"; //On localhost
+//let baseUrl = "https://creatives-space-api.herokuapp.com/api/v1/"; //On production
 let authUrl = "https://creatives-space-auth.herokuapp.com/api/v1/";
 
 Eta.configure({
     filter: function (val) {
         return (val === undefined || val === null)? "": val
     }
-})
+});
 
 app.use(cookieParser());
 app.use(compression());
@@ -56,10 +57,11 @@ app.use(function(req,res,next){
     next();
 });
 
-app.get('/', (req, res) => { Pages.mainPage(req, res, baseUrl) });
+app.get('/', async (req, res) => { Pages.mainPage(req, res, baseUrl) });
 app.get('/wait', (req, res) => { res.render("wait") });
 app.get('/sitemap.xml', (req, res) => { sitemap.XMLtoWeb(res);})
-app.get('/profile', (req, res) => { Pages.profilePage(req, res, baseUrl) });
+app.get('/profile', async (req, res) => { Pages.profilePage(req, res, baseUrl) });
+app.get('/liked-videos', async (req, res) => { Pages.likedVideos(req, res, baseUrl) });
 
 app.get('/register', (req, res) => { Auth.registerGet(req, res, authUrl) });
 app.post('/register', (req, res) => { Auth.registerPost(req, res, authUrl) });
@@ -74,11 +76,14 @@ app.get('/change-information', (req, res) => { Settings.settingsPage(req, res, b
 app.post('/change-information', (req, res) => { Settings.changeMainInformation(req, res, baseUrl) });
 app.post('/change-password', (req, res) => { Settings.changeUserPassword(req, res, baseUrl) });
 
-app.get('/video/:videoId', (req, res) => { Pages.videoPage(req, res, baseUrl) });
-app.get('/user/:id', (req, res) => { Pages.seeUser(req, res, baseUrl) });
+app.get('/video/:videoId', async (req, res) => { Pages.videoPage(req, res, baseUrl) });
+app.get('/user/:id', async (req, res) => { Pages.seeUser(req, res, baseUrl) });
 
-app.post('/add-emotion', (req, res) => { Pages.sendEmotion(req, res, baseUrl) });
-app.post('/add-comment', (req, res) => { Pages.sendComment(req, res, baseUrl) });
+app.post('/add-emotion', async (req, res) => { Pages.sendEmotion(req, res, baseUrl) });
+app.post('/add-comment', async (req, res) => { Pages.sendComment(req, res, baseUrl) });
+
+//Wrapper for hiding API
+app.post("/search", async (req, res) => { Wrapper.search(req, res, baseUrl) });
 
 
 sitemap.generate4(app);

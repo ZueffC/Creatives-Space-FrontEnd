@@ -1,0 +1,23 @@
+<% layout("./layout") %>
+<link rel="stylesheet" href="../static/css/profile.css">
+<script src="../static/js/fetchival.min.js"></script>
+
+<center>
+    <h3>Список понравившихся видео:</h3>
+</center>
+
+<div class="videos">
+
+</div>
+
+<script async>
+    let videosNode = document.querySelector(".videos");
+
+    <% it.videos.forEach(video => { %>
+        videoId = <%= video.ID %>;
+
+        fetchival("<%= it.baseUrl %>getVideo/" + videoId).get().then(function (json) {
+            videosNode.innerHTML += `<ul><li class="card"><a href="/video/${json.Video.ID}" class="featured-image" style="background-image:url('<%= it.baseUrl%>${json.Video.Cover}')"></a><article class="card-body"><header><a href="/video/${json.Video.ID}"><span class="pre-heading">Видео</span><div class="title"><h3>${json.Video.Name}</h3></div><p class="meta"><span class="author">Загружено</span><time class="updated"> ${timeago.format(json.Video.CreatedAt, "ru")}</time></p></a></header><div class="chips"><a class="chip">[Tag Placeholder]</a></div></article></li></ul>`;
+        });
+    <% }); %>
+</script>

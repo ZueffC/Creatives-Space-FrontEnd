@@ -3,12 +3,14 @@
 <link rel="stylesheet" href="../static/css/profile.css">
 <br />
 
+
 <div class="container padding-bottom-3x mb-2">
+
     <div class="row">
         <div class="col-lg-4">
             <aside class="user-info-wrapper">
                 <div class="user-cover">
-                    <div class="info-label" data-toggle="tooltip" title="" data-original-title="You currently have 290 Reward Points to spend">
+                    <div class="info-label" data-toggle="tooltip" title="" data-original-title="">
                         <i class="icon-medal"></i>0 подписчиков
                     </div>
                 </div>
@@ -20,17 +22,24 @@
                         <h4><%= it.data.User.Nick %></h4>
                         <span>
                             Аккаунт был создан
-                            <script> document.write(timeago.format("<%= it.data.User.CreatedAt %>", "ru")); </script>
+                            <script>  document.write(timeago.format("<%= it.data.User.CreatedAt %>", "ru")); </script>
                         </span>
                     </div>
+                </div>
+                <div class="p-3" style="">
+                    <h5 class=""><bold>О канале:</bold></h5>
+                    <p class=""><%= it.data.About.About %></p>
                 </div>
             </aside>
             <nav class="list-group">
                 <a class="list-group-item" href="../profile"><i class="fa fa-user"></i>Профиль</a>
 
                 <% if (E.userId == it.data.User.ID) { %>
-                    <a class="list-group-item with-badge" href="change-information">
+                    <a class="list-group-item with-badge" href="/change-information">
                         <i class=" fa fa-th"></i>Настройки
+                    </a>
+                    <a class="list-group-item with-badge" href="/liked-videos">
+                        <i class="fa fa-burn"></i> Понравившиеся видео
                     </a>
                 <% } %>
             </nav>
@@ -51,47 +60,47 @@
                             <% } %>
                         </tr>
                     </thead>
+                </table>
 
-                    <tbody>
-                        <% it.videos.forEach(video => { %>
-                            <tr>
-                                <td>
-                                    <div class="product-item">
-                                        <a class="product-thumb" href="video/<%= video.ID %>">
-                                            <img src="<%= it.baseUrl%><%= video.Cover %>" alt="Product">
-                                        </a>
-                                        <div class="product-info">
-                                            <h4 class="product-title"><a href="video/<%= video.ID %>">Название: <%= video.Name %></a></h4>
-                                            <div class="text-lg text-medium text-muted"> Загружено
+                <% it.videos.forEach(video => { %>
+                    <ul>
+                        <li class="card">
+                            <a href="/video/<%= video.ID %>"
+                               class="featured-image"
+                               style="background-image:url('<%= it.baseUrl%><%= video.Cover %>')">
+                            </a>
+                            <article class="card-body">
+                                <header>
+                                    <a href="/video/<%= video.ID %>">
+                                        <span class="pre-heading">Видео</span>
+                                        <div class="title">
+                                            <h3><%= video.Name %></h3>
+                                        </div>
+                                        <p class="meta">
+                                            <span class="author">Загружено</span>
+                                            <time class="updated">
                                                 <script>
                                                     document.write(timeago.format("<%= video.CreatedAt %>", "ru"));
                                                 </script>
-                                            </div>
-                                            <div>Описание:
-                                                <div class="d-inline text-success">
-                                                    <script>
-                                                        document.write("<%= video.About %>".slice(0,100));
-                                                    </script>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td class="text-center">
-                                    <a class="remove-from-cart" href="#" data-toggle="tooltip" title="" data-original-title="Remove item">
-                                        <i class="icon-cross"></i>
+                                            </time>
+                                        </p>
                                     </a>
-                                </td>
-                            </tr>
-                        <% }); %>
-                    </tbody>
+                                </header>
+                                <div class="chips">
+                                    <a class="chip">[Tag Placeholder]</a>
+                                </div>
+                            </article>
+                        </li>
+                    </ul>
+                <% }); %>
 
-                </table>
             </div>
         </div>
     </div>
+
 </div>
 
+<script  src="../static/js/mini-lightbox.min.js"></script>
 <script defer>
     let CoverDiv = document.querySelector(".user-cover");
     let AvatarImg = document.querySelector(".user-avatar-img");
@@ -105,14 +114,13 @@
     }
 
     if ("<%= it.data.About.Cover %>".length > 0){
-        coverUrl = "<%= it.baseUrl %><%= it.data.About.Cover %>";
+        coverUrl = "url(<%= it.baseUrl %><%= it.data.About.Cover %>)";
     } else {
         coverUrl =  "url(../static/images/cover.jpg)";
     }
 
-    let coverPath = coverUrl;
-    let avatarPath = avatarUrl;
-
-    CoverDiv.style.backgroundImage = coverPath;
-    AvatarImg.src = avatarPath;
+    CoverDiv.style.backgroundImage = coverUrl;
+    AvatarImg.src = avatarUrl;
+    
+    new MiniLightbox(".user-avatar-img");
 </script>
