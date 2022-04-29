@@ -18,8 +18,8 @@ const cors = require('cors');
 const Eta = require("eta");
 const app = express();
 
-let baseUrl = "http://127.0.0.1:5000/api/v1/"; //On localhost
-//let baseUrl = "https://creatives-space-api.herokuapp.com/api/v1/"; //On production
+//let baseUrl = "http://127.0.0.1:5000/api/v1/"; //On localhost
+let baseUrl = "https://creatives-space-api.herokuapp.com/api/v1/"; //On production
 let authUrl = "https://creatives-space-auth.herokuapp.com/api/v1/";
 
 Eta.configure({
