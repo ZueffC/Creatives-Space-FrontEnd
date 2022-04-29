@@ -1,0 +1,17 @@
+<% layout('./layout') %>
+<%~ includeFile("./partials/search-form") %>
+
+<% if(it.search.Users) { %>
+
+<% } %>
+
+<% if(it.search.Videos) { %>
+    <%~ includeFile("./partials/video-card", {videos: it.search.Videos, baseUrl: it.baseUrl}) %>
+<% } else { %>
+    <center>
+        </br> </br>
+        <div class="container">
+            <h2>К сожалению, никаких видео найти не удалось :( </h2>
+        </div>
+    </center>
+<% } %>

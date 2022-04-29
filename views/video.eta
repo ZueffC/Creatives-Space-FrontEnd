@@ -10,21 +10,13 @@
     }
 </style>
 
-<div class="tm-hero d-flex justify-content-center align-items-center" data-parallax="scroll"
-     data-image-src="../static/images/hero.jpg"
->
-    <form class="d-flex tm-search-form">
-        <input class="form-control tm-search-input" type="search" placeholder="Искать..." aria-label="Search">
-        <button class="btn btn-outline-success tm-search-btn" type="submit">
-            <i class="fas fa-search"></i>
-        </button>
-    </form>
-</div>
+<%~ includeFile("./partials/search-form") %>
 
 <div class="container-fluid tm-container-content tm-mt-60">
     <div class="row mb-4">
-        <h2 class="col-12 tm-text-primary"><%= it.video.Video.Name %></h2>
+        <h2 class="col-12 tm-text-primary video-title"><%= it.video.Video.Name %></h2>
     </div>
+
     <div class="row tm-mb-90">
 
         <div class="col-xl-8 col-lg-7 col-md-6 col-sm-12">
@@ -38,15 +30,19 @@
                 </center>
             </div>
         </div>
+
         <div class="col-xl-4 col-lg-5 col-md-6 col-sm-12">
             <div class="tm-bg-gray tm-video-details">
                 <span class="tm-text-gray-dark mb-6"><b>Описание</b>: <%= it.video.Video.About %></span>
                 <div class="text-center mb-4 mt-4">
-                    <a href="<%= it.baseUrl %><%= it.video.Video.PathToVideo %>"
-                       class="btn btn-primary tm-btn-big w-100" download>
+                    <a href="<%= it.baseUrl %><%= it.video.Video.PathToVideo %>" class="btn btn-primary tm-btn-big w-100" download>
                         Скачать
                     </a>
                     <a class="btn btn-primary tm-btn-big mt-2 w-100" id="share" onclick="toast()">Поделиться</a>
+
+                    <% if(E.userId == it.video.VideoAuthor.ID) { %>
+                        <a class="btn btn-primary tm-btn-big mt-2 w-100" onclick="warn_allert()">Удалить</a>
+                    <% } %>
                 </div>
                 <div class="mb-4 d-flex flex-wrap">
                     <div class="mr-4 mb-2">
@@ -75,6 +71,7 @@
         </div>
 
     </div>
+
     <div class="row mb-4">
         <h2 class="col-12 tm-text-primary">
             Другие классные видео:
@@ -84,6 +81,8 @@
 </div>
 
 <script src="../static/js/clipboard.min.js"></script>
+<script async src="../static/js/sweetalert2.all.min.js"></script>
+
 <script async>
     let clipboard = new ClipboardJS('#share', {
         text: function(trigger) {
@@ -113,7 +112,7 @@
                                 </figcaption>
                             </figure>
                             <div class="d-flex justify-content-between tm-text-gray">
-                                <span class="tm-text-gray-light">${video.Name}</span>
+                                <span class="tm-text-gray-light video-title">${video.Name}</span>
                                 <span>${video.Views} просмотров</span>
                             </div>
                         </div>
@@ -131,7 +130,42 @@
         fetchival('/add-emotion').post({
             videoId: "<%= it.video.Video.ID %>",
             emotion: em,
-        })
+        }).then(response => {
+            if (response.result === "go_to_login"){
+                window.location.href = "/login";
+            }
+        });
+    }
+    function warn_allert() {
+        Swal.fire({
+            title: 'Вы ТОЧНО уверены?',
+            text: "Вы точно хотите удалить видео? Восстановить его будет невозможно.",
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Да, удаляйте!',
+            cancelButtonText: "Нет, оставим",
+        }).then((result) => {
+            if (result.isConfirmed) {
+                fetchival("../api/v1/delete-video").post({
+                    videoId: "<%= it.video.Video.ID %>",
+                }).then(response => {
+                    Swal.fire(
+                        'Удалили!',
+                        "Или всё таки нет? </br> * Передаём информацию [ДАННЫЕ УДАЛЕНЫ] *",
+                        'success'
+                    );
+                });
+            } else {
+                Swal.fire(
+                    "И правильно. Оставьте компромат на себя для будущих поколений. ",
+                    "",
+                    "info"
+                );
+            }
+        });
+
     }
 </script>
 

@@ -647,3 +647,7 @@ select:not([multiple]) {
 
     .tm-social-links li { margin-right: 3px; }
 }
+
+.video-title {
+    text-transform: uppercase;
+}

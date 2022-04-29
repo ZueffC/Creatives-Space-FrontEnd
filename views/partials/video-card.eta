@@ -1,0 +1,33 @@
+<link rel="stylesheet" href="../static/css/profile.css">
+
+<% it.videos.forEach(video => { %>
+    <ul>
+        <li class="card">
+            <a href="/video/<%= video.ID %>"
+               class="featured-image"
+               style="background-image:url('<%= it.baseUrl %><%= video.Cover %>')">
+            </a>
+            <article class="card-body">
+                <header>
+                    <a href="/video/<%= video.ID %>">
+                        <span class="pre-heading">Видео</span>
+                        <div class="title">
+                            <h3 class="video-title"><%= video.Name %></h3>
+                        </div>
+                        <p class="meta">
+                            <span class="author">Загружено</span>
+                            <time class="updated">
+                                <script>
+                                    document.write(timeago.format("<%= video.CreatedAt %>", "ru"));
+                                </script>
+                            </time>
+                        </p>
+                    </a>
+                </header>
+                <div class="chips">
+                    <a class="chip">[Tag Placeholder]</a>
+                </div>
+            </article>
+        </li>
+    </ul>
+<% }); %>

@@ -34,42 +34,29 @@ async function videoPage(req, res, baseUrl){
     if (req.params.videoId){
         let comments;
 
-        axios.get(baseUrl + `getComments/${req.params.videoId}`).then(function(data){  comments = data.data });
-        axios.get(baseUrl + `getVideo/${req.params.videoId}`).then(function (response) {
-            axios.get(baseUrl + `getUser/${response.data.Video.UserId}`).then(function(userData) {
-                res.render("video", {video: response.data, author: userData.data, baseUrl: baseUrl, title: response.data.Video.Name, comments: comments});
+        axios.get(baseUrl + `getComments/${req.params.videoId}`)
+            .then(function(data){
+                if(data.data)
+                    comments = data.data;
+                else
+                    res.redirect("/");
             });
+
+        axios.get(baseUrl + `getVideo/${req.params.videoId}`).then(function (response) {
+            if(response.data.Video != null){
+                axios.get(baseUrl + `getUser/${response.data.Video.UserId}`).then(function(userData) {
+                    res.render("video", {video: response.data, author: userData.data, baseUrl: baseUrl, title: response.data.Video.Name, comments: comments});
+                });
+            } else {
+                res.redirect("/");
+            }
         });
     } else {
         res.redirect("/");
     }
 }
 
-async function sendEmotion(req, res, baseUrl){
-    if(req.session.userId){
-        let videoId = parseInt(req.body.videoId, 10);
-        let emotion = parseInt(req.body.emotion, 10);
-        let userId = parseInt(req.session.userId, 10);
-        
-        axios.post(baseUrl + "add-emotion", {videoId: videoId, emotion: emotion, userId: userId});
-    } else {
-        res.send("go_to_login")
-    }
-}
-
-async function sendComment(req, res, baseUrl){
-    if(req.session.userId){
-        let comment = req.body.comment;
-        let userId  = parseInt(req.session.userId, 10);
-        let videoId = parseInt(req.body.videoId, 10);
-
-        axios.post(baseUrl + "add-comment", {comment: comment, userId: userId, videoId: videoId});
-    } else {
-        res.send("go_to_login")
-    }
-}
-
-async function seeUser(req, res, baseUrl){
+async function anotherUserPage(req, res, baseUrl){
     let userId = req.params.id;
     let sessionId = req.session.userId;
 
@@ -78,9 +65,13 @@ async function seeUser(req, res, baseUrl){
             res.redirect("/profile");
         } else {
             axios.get(baseUrl + `getUser/${userId}`).then(responseUser => {
-                axios.get(baseUrl + `getAllUserVideos/${userId}`).then(responseVideos => {
-                    res.render("profile", {data: responseUser.data, videos: responseVideos.data || null, baseUrl: baseUrl, title: "Профиль " + responseUser.data.User.Nick});
-                });
+                if (responseUser.data.User != null){
+                    axios.get(baseUrl + `getAllUserVideos/${userId}`).then(responseVideos => {
+                        res.render("profile", {data: responseUser.data, videos: responseVideos.data || null, baseUrl: baseUrl, title: "Профиль " + responseUser.data.User.Nick});
+                    });
+                } else {
+                    res.redirect("/");
+                }
             });
         }
     } else {
@@ -88,7 +79,7 @@ async function seeUser(req, res, baseUrl){
     }
 }
 
-async function likedVideos(req, res, baseUrl){
+async function likedVideosPage(req, res, baseUrl){
     let userId = req.session.userId;
 
     if (userId != null && userId > 0){
@@ -100,14 +91,26 @@ async function likedVideos(req, res, baseUrl){
     }
 }
 
+async function searchPage(req, res, baseUrl){
+    let text = (req.body.text).trim();
+
+    if (text) {
+        axios.post(baseUrl + 'search', {title: text}).then((response) => {
+            res.render("search", {search: response.data, baseUrl: baseUrl});
+        });
+    } else {
+        res.redirect("/");
+    }
+}
+
+
 
 module.exports = {
     name: "Pages",
-    likedVideos: likedVideos,
+    searchPage: searchPage,
+    likedVideosPage: likedVideosPage,
     mainPage: mainPage,
     profilePage: profilePage,
     videoPage: videoPage,
-    sendEmotion: sendEmotion,
-    sendComment: sendComment,
-    seeUser: seeUser,
+    anotherUserPage: anotherUserPage,
 }
