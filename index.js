@@ -18,9 +18,9 @@ const cors = require('cors');
 const Eta = require("eta");
 const app = express();
 
-let baseUrl = "http://127.0.0.1:5000/api/v1/"; //On localhost
 //let baseUrl = "https://creatives-space-api.herokuapp.com/api/v1/"; //On production
-let authUrl = "https://creatives-space-auth.herokuapp.com/api/v1/";
+let authUrl = "http://tiauth.ooo/api/v1/";
+let baseUrl = "http://127.0.0.1:5000/api/v1/"; //On localhost
 
 Eta.configure({
     filter: function (val) {
@@ -63,6 +63,7 @@ app.get('/wait', async (req, res) => { res.render("wait"); });
 app.get('/sitemap.xml', (req, res) => { sitemap.XMLtoWeb(res); })
 app.get('/profile', async (req, res) => { Pages.profilePage(req, res, baseUrl); });
 app.get('/liked-videos', async (req, res) => { Pages.likedVideosPage(req, res, baseUrl); });
+app.get('/history', async (req, res) => { Pages.historyPage(req, res, baseUrl); });
 app.post("/search", async (req, res) => { Pages.searchPage(req, res, baseUrl); });
 
 app.get('/register', (req, res) => { Auth.registerGet(req, res, authUrl); });

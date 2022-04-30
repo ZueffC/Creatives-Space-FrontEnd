@@ -94,8 +94,6 @@
         const player = new Plyr('#player');
         const videoList = document.querySelector("#videoList");
 
-        fetch("<%= it.baseUrl %>add-view-to-video/<%= it.video.Video.ID %>");
-
         fetch("<%= it.baseUrl %>")
             .then(videos => videos.json())
             .then(videos => {

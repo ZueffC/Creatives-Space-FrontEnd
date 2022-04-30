@@ -38,6 +38,9 @@
                     <a class="list-group-item with-badge" href="/liked-videos">
                         <i class="fa fa-burn"></i> Понравившиеся видео
                     </a>
+                    <a class="list-group-item with-badge" href="/history">
+                        <i class="fa fa-history"></i> История
+                    </a>
                 <% } %>
             </nav>
         </div>

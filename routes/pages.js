@@ -14,15 +14,21 @@ async function profilePage(req, res, baseUrl){
             .then(responseUser => {
                 axios.get(baseUrl + `getAllUserVideos/${userId}`)
                     .then(responseVideos => {
-                        console.log(responseUser.data)
-                        res.render("profile",
-                            {
-                                data: responseUser.data,
-                                videos: responseVideos.data || null,
-                                baseUrl: baseUrl, title: "Профиль " + responseUser.data.User.Nick,
-                                profile: true
-                            }
-                        );
+                        console.log(responseUser.data);
+
+                        if(responseUser.data.User != null){
+                            res.render("profile",
+                                {
+                                    data: responseUser.data,
+                                    videos: responseVideos.data || null,
+                                    baseUrl: baseUrl, title: "Профиль " + responseUser.data.User.Nick,
+                                    profile: true
+                                }
+                            );
+                        } else {
+                            res.redirect("/logout");
+                        }
+
                     });
             });
     } else {
@@ -34,7 +40,7 @@ async function videoPage(req, res, baseUrl){
     if (req.params.videoId){
         let comments;
 
-        axios.get(baseUrl + `getComments/${req.params.videoId}`)
+        axios.get(`${baseUrl}getComments/${req.params.videoId}`)
             .then(function(data){
                 if(data.data)
                     comments = data.data;
@@ -42,15 +48,21 @@ async function videoPage(req, res, baseUrl){
                     res.redirect("/");
             });
 
-        axios.get(baseUrl + `getVideo/${req.params.videoId}`).then(function (response) {
+        axios.get(`${baseUrl}getVideo/${req.params.videoId}`).then(function (response) {
             if(response.data.Video != null){
-                axios.get(baseUrl + `getUser/${response.data.Video.UserId}`).then(function(userData) {
+                axios.get(`${baseUrl}getUser/${response.data.Video.UserId}`).then(function(userData) {
+                    axios.get(`${baseUrl}add-view-to-video/${response.data.Video.ID}`);
+
+                    if(req.session.userId != null)
+                        axios.get(`${baseUrl}add-to-history/by/${req.session.userId}/to/${response.data.Video.ID}`);
+
                     res.render("video", {video: response.data, author: userData.data, baseUrl: baseUrl, title: response.data.Video.Name, comments: comments});
                 });
             } else {
                 res.redirect("/");
             }
         });
+
     } else {
         res.redirect("/");
     }
@@ -91,6 +103,18 @@ async function likedVideosPage(req, res, baseUrl){
     }
 }
 
+async function historyPage(req, res, baseUrl){
+    let userId = req.session.userId;
+
+    if (userId != null && userId > 0){
+        axios.get(`${baseUrl}history/by/${userId}`).then((response) => {
+            res.render("history", {videos: response.data, baseUrl: baseUrl});
+        });
+    } else {
+        res.redirect("/");
+    }
+}
+
 async function searchPage(req, res, baseUrl){
     let text = (req.body.text).trim();
 
@@ -113,4 +137,5 @@ module.exports = {
     profilePage: profilePage,
     videoPage: videoPage,
     anotherUserPage: anotherUserPage,
+    historyPage: historyPage,
 }

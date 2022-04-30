@@ -1,0 +1,56 @@
+<% layout('./layout') %> <%~ includeFile("./partials/search-form") %>
+<script src="../static/js/fetchival.min.js"></script>
+<link rel="stylesheet" href="../static/css/profile.css">
+
+
+<div class="list"></div>
+
+<% if(it.videos[0] != null) { %>
+    <script async>
+        let list = document.querySelector(".list");
+        let baseUrl = "<%= it.baseUrl %>";
+
+        <% it.videos.forEach(video => { %>
+            fetchival(`${baseUrl}getVideo/<%= video.VideoId %>`).get().then(resp => {
+                list.innerHTML += `
+                    <ul>
+                        <li class="card">
+                            <a href="/video/${resp.Video.ID}"
+                               class="featured-image"
+                               style="background-image:url(${baseUrl}${resp.Video.Cover})">
+                            </a>
+                            <article class="card-body">
+                                <header>
+                                    <a href="/video/${resp.Video.ID}">
+                                        <span class="pre-heading">Видео</span>
+                                        <div class="title">
+                                            <h3 class="video-title">${resp.Video.Name}</h3>
+                                        </div>
+                                        <p class="meta">
+                                            <span class="author">Загружено</span>
+                                            <time class="updated">
+                                                    ${timeago.format("<%= video.CreatedAt %>", "ru")}
+                                            </time>
+                                        </p>
+                                    </a>
+                                </header>
+                                <div class="chips">
+                                    <a class="chip">[Tag Placeholder]</a>
+                                </div>
+                            </article>
+                        </li>
+                    </ul>
+                `;
+            });
+        <% }); %>
+    </script>
+<% } else { %>
+    <center>
+        </br> </br>
+        <div class="container">
+            <h2>К сожалению, у Вас нет истории просмотров. Мы Вами недовольны! </h2>
+        </div>
+    </center>
+<% } %>
+
+

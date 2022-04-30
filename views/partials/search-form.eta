@@ -1,4 +1,4 @@
-<div class="tm-hero d-flex justify-content-center align-items-center" data-parallax="scroll" data-image-src="../static/images/hero.jpg">
+<div class="tm-hero d-flex justify-content-center align-items-center" data-parallax="scroll">
     <form class="d-flex tm-search-form" action="/search" method="post">
         <input class="form-control tm-search-input" type="text" name="text" placeholder="Искать... " aria-label="Search">
         <button class="btn btn-outline-success tm-search-btn" type="submit">
@@ -6,3 +6,9 @@
         </button>
     </form>
 </div>
+
+<style>
+    .tm-hero {
+        background-image: url("../static/images/hero.jpg") !important;
+    }
+</style>
